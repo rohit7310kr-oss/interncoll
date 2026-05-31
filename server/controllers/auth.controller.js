@@ -17,6 +17,8 @@ exports.createUser = catchAsyncHandler(async function (req, res) {
 
   const token = createToken(user.publicId, user.role);
 
+  if (!token) return res.status(500).json({ message: "Token is not created" });
+
   const userObj = user.toObject();
 
   const { _id, password, ...rest } = userObj;
