@@ -3,17 +3,23 @@ import {
   BellRing,
   Bookmark,
   Briefcase,
+  ChevronDown,
   Mail,
   MapPinSearch,
   Search,
   ThumbsDown,
   User,
 } from "lucide-react";
-import React from "react";
+import React, { useState } from "react";
 import Button from "../../shared/components/Button";
 import Tag from "../../shared/components/Tag";
 
 const Home = () => {
+  const [showDropdown, setShowDropdown] = useState(false);
+
+  const toggleDropdown = () => setShowDropdown((prev) => !prev);
+  const closeDropdown = () => setShowDropdown(false);
+
   return (
     <div>
       <nav className="bg-gray-100 flex justify-between items-center px-4 py-3 shadow-sm">
@@ -49,7 +55,27 @@ const Home = () => {
               </li>
             </ul>
           </div>
-          <div className="px-2 py-3 cursor-pointer">Employee</div>
+          <div className="relative" tabIndex={0} onBlur={closeDropdown}>
+            <button
+              type="button"
+              onClick={toggleDropdown}
+              className="flex items-center gap-1 px-4 py-3 rounded-full bg-white border border-gray-200 shadow-sm hover:bg-gray-50"
+              aria-expanded={showDropdown}
+            >
+              <span>Employee</span>
+              <ChevronDown />
+            </button>
+            {showDropdown && (
+              <div className="absolute right-0 z-10 mt-2 w-40 overflow-hidden rounded-2xl border border-gray-200 bg-white shadow-lg">
+                <button
+                  type="button"
+                  className="w-full text-left px-4 py-3 hover:bg-gray-100"
+                >
+                  Logout
+                </button>
+              </div>
+            )}
+          </div>
         </div>
       </nav>
       <section className="py-6 flex justify-center align-middle ">

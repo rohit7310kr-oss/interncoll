@@ -2,29 +2,31 @@ import React, { useState } from "react";
 import Tags from "@yaireo/tagify/dist/react.tagify"; // Import the React component
 import "@yaireo/tagify/dist/tagify.css"; // Import the required CSS
 
-const MyTagInput = () => {
-  const [values, setValues] = useState([]);
-
-  const whitelist = ["hello", "world"];
-
+const MyTagInput = ({
+  values,
+  mode = "select",
+  whitelist = [],
+  label = "tag",
+  onChange,
+}) => {
   const tagifySettings = {
-    enforceWhitelist: true,
+    mode,
     tagTextProp: "label",
+    enforceWhitelist: true,
     maxTags: 5,
     dropdown: {
-      enabled: 0, // 2. Show suggestions on focus (0 chars typed)
-      maxItems: 20, // Limit visible items in list
-      classname: "tags-look", // Optional: Custom class for styling
+      enabled: 0,
+      maxItems: 20,
+      classname: "tags-look",
+      mapValueTo: "label",
+      closeOnSelect: mode === "select",
+      searchKeys: ["label", "value"],
     },
-  };
-
-  const onChange = (e) => {
-    setValues(e.detail.tagify.value);
   };
 
   return (
     <div className="m-1 w-full">
-      <label>Tag</label>
+      <label className="mb-2">{label}</label>
       <Tags
         value={values}
         whitelist={whitelist}

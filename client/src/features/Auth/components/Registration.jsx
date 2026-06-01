@@ -6,6 +6,7 @@ import Loading from "../../../shared/components/Loading";
 import Error from "../../../shared/components/Error";
 import Button from "../../../shared/components/Button";
 import MyTagInput from "../../../shared/components/MyTagInput";
+import { purposeOptions } from "../../../constant";
 
 const Registration = () => {
   const navigate = useNavigate();
@@ -14,6 +15,7 @@ const Registration = () => {
     isLoading: userRegistrationLoading,
     formData,
     handleChange,
+    handleTagInputChange,
     handleSubmit,
     fieldErrors,
     error: userRegistrationError,
@@ -21,7 +23,7 @@ const Registration = () => {
   } = useRegistrationFormHandler(onSuccess);
 
   function onSuccess() {
-    navigate("/app/user");
+    navigate("/app  ");
   }
 
   if (userRegistrationLoading)
@@ -63,7 +65,13 @@ const Registration = () => {
           placeholder="Enter your email address"
           error={fieldErrors.email}
         />
-        <MyTagInput />
+        <MyTagInput
+          values={formData.purpose}
+          onChange={(e) => handleTagInputChange(e, "purpose")}
+          name="purpose"
+          label="Purpose"
+          whitelist={purposeOptions}
+        />
         <FormInput
           label="Password"
           type="password"

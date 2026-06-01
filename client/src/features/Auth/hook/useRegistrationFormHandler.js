@@ -5,7 +5,7 @@ const useFormHandler = function (onSuccess) {
   const formInputs = {
     fullName: "",
     email: "",
-    purpose: "",
+    purpose: [],
     skills: "",
     password: "",
     confirmPassword: "",
@@ -28,6 +28,14 @@ const useFormHandler = function (onSuccess) {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
+  const handleTagInputChange = (e, name) => {
+    setFormData((data) => {
+      return { ...data, [name]: JSON.parse(e.detail.value) };
+    });
+  };
+
+  console.log(formData);
+
   const createUserHandler = async function () {
     try {
       setFieldErrors(formInputs);
@@ -39,12 +47,6 @@ const useFormHandler = function (onSuccess) {
           };
         });
 
-      if (formData.phone.length !== 10) {
-        return setFieldErrors((err) => {
-          return { ...err, phone: "Phone number must be of 10 digit only" };
-        });
-      }
-
       if (formData.fullName.length < 2)
         return setFieldErrors((errors) => {
           return { ...errors, fullName: "Please write correct name" };
@@ -52,7 +54,13 @@ const useFormHandler = function (onSuccess) {
 
       setIsLoading(true);
 
-      const response = await createUserAPI(formData);
+      const response = await createUserAPI({
+        fullName: formData.fullName,
+        email: formData.email,
+        purpose: formData.purpose[0].value,
+        password: formData.password,
+        confirmPassword: formData.confirmPassword,
+      });
 
       localStorage.setItem("token", response.data.token);
       localStorage.setItem("user", JSON.stringify(response.data.data));
@@ -86,6 +94,7 @@ const useFormHandler = function (onSuccess) {
     fieldErrors,
     error,
     retry,
+    handleTagInputChange,
   };
 };
 
